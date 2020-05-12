@@ -4,7 +4,8 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import logoImg from '../../assets/logo.svg';
@@ -23,6 +24,7 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const { user, sigIn } = useAuth();
+  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: SignInFormDate) => {
@@ -32,7 +34,7 @@ const SignIn: React.FC = () => {
         const schema = Yup.object().shape({
           email: Yup.string()
             .required('Email obrigatório')
-            .email('Digitge um email válido'),
+            .email('Digite um email válido'),
           password: Yup.string().min(6, 'No minimo 6 digitos'),
         });
 
@@ -42,12 +44,20 @@ const SignIn: React.FC = () => {
 
         sigIn({ email: data.email, password: data.password });
       } catch (err) {
-        const errors = getValidationErrors(err);
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
 
-        formRef.current?.setErrors(errors);
+          formRef.current?.setErrors(errors);
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Erro na autentucação',
+          description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
+        });
       }
     },
-    [sigIn],
+    [sigIn, addToast],
   );
   return (
     <Container>
