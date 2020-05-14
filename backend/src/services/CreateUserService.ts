@@ -8,11 +8,11 @@ import AppError from '../errors/AppError';
 interface Request {
   name: string;
   email: string;
-  passwords: string;
+  password: string;
 }
 
 class CreateUserService {
-  public async execute({ name, email, passwords }: Request): Promise<User> {
+  public async execute({ name, email, password }: Request): Promise<User> {
     const userRepository = getRepository(User);
 
     const checkUserExists = await userRepository.findOne({
@@ -23,7 +23,7 @@ class CreateUserService {
       throw new AppError('Email address alredy used.', 400);
     }
 
-    const hashedPassword = await hash(passwords, 8);
+    const hashedPassword = await hash(password, 8);
 
     const user = userRepository.create({
       name,
