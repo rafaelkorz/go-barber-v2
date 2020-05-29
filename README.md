@@ -10,10 +10,4 @@ Here are the links to them
 - [Web client](https://github.com/rafaelkorz/go-barber-v2/tree/master/web)
 - [Mobile client](https://github.com/rafaelkorz/go-barber-v2/tree/master/app)
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 Made with 💜 by Rafael Korz 👋 [See my linkedin](https://www.linkedin.com/in/rafael-korz-60105537/)
